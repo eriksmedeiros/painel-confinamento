@@ -1,0 +1,37 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# === Ambientes Virtuais ===
+.venv/
+venv/
+env/
+
+# === Jupyter & Experimentos ML ===
+.ipynb_checkpoints/
+runs/
+wandb/
+mlruns/
+
+# === Segredos & Variáveis de Ambiente ===
+.env
+.env.*
+!.env.example
+
+# === Sistema Operacional & IDEs ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# === Dados, Pesos de Modelos & Ferramentas Locais ===
+dados/
+.agents/
+*.pt
+*.pth
+*.onnx
