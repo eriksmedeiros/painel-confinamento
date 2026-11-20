@@ -1,0 +1,16 @@
+[project]
+name = "painel-confinamento"
+version = "0.1.0"
+description = "Protótipo acadêmico de visão computacional para leitura de cocho (SDSU) e comportamento bovino em confinamento."
+readme = "README.md"
+requires-python = ">=3.11"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

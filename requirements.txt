@@ -1,0 +1,21 @@
+# Dependências do projeto (RNF01)
+# Instale com: pip install -r requirements.txt
+
+# === Deep Learning & Visão Computacional ===
+torch
+torchvision
+timm
+ultralytics
+
+# === Dados & Métricas ===
+numpy
+pandas
+scikit-learn
+pillow
+
+# === Painel (Demo) ===
+gradio
+
+# === Testes & Qualidade ===
+pytest
+ruff==0.17.6
