@@ -16,13 +16,23 @@ No confinamento, a quantidade de ração é definida por avaliação visual, suj
 
 ```text
 painel-confinamento/
+├── .github/                # Templates de PR e workflow de CI (Ruff)
+├── app/                    # Interface Gradio do painel
 ├── dados/                  # Datasets locais (não versionados no Git)
 │   ├── CVB_dataset/
 │   └── FBSI_dataset/
+├── data/                   # Pré-processamento, splits e datasets PyTorch
 ├── docs/
 │   └── requisitos/         # Especificação e PRD do projeto
+├── models/                 # Arquiteturas (Módulo A: Cocho, Módulo B: Curral)
+├── tests/                  # Testes unitários
+├── train/                  # Scripts de treino, avaliação e reprodutibilidade
+├── .gitattributes
 ├── .gitignore
-└── README.md
+├── LICENSE
+├── pyproject.toml
+├── README.md
+└── requirements.txt
 ```
 
 ## Documentação
