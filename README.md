@@ -37,7 +37,10 @@ painel-confinamento/
 
 ## Documentação
 
-- [PRD — Painel Diário do Confinamento](docs/requisitos/%5BPRD%5D-Painel-Diario-do-Confinamento.md)
+- [PRD — Painel Diário do Confinamento](docs/requisitos/PRD-Painel-Diario-do-Confinamento.md)
+- [Épicos e Portões do Projeto](docs/requisitos/epicos.md)
+- [User Stories e Critérios de Aceite](docs/requisitos/user-stories.md)
+- [AGENTS.md — Regras para Agentes de IA](AGENTS.md)
 
 ## Licença
 
