@@ -153,6 +153,7 @@ Datas assumindo início em 16/11/2026 e entrega em 15/12/2026; ajustar quando a 
 
 | Risco | Probabilidade | Impacto | Mitigação |
 | --- | --- | --- | --- |
+| Volume do CVB (14,26 GB) estoura o Google Drive gratuito (15 GB) e deixa upload e leitura no Colab lentos | Alta | Médio | **Plano escolhido:** pré-processar localmente uma vez e subir só o derivado (detalhes abaixo) |
 | Anotações do CVB sem ID persistente por animal | Média | Médio | Gerar IDs com o rastreador do Ultralytics e conferir uma amostra à mão |
 | Módulo B atrasa além da semana 2 | Média | Alto | Simplificar: features por quadro (CNN) + LSTM, sem rastreamento individual |
 | CVB inadequado para o objetivo | Baixa | Alto | **Plano B:** mesmo pipeline aplicado à detecção de quedas (UR Fall / Le2i) |
@@ -161,6 +162,18 @@ Datas assumindo início em 16/11/2026 e entrega em 15/12/2026; ajustar quando a 
 | ViT ou transformer temporal rende pouco com poucos dados | Alta | Baixo | É um resultado válido; analisar e reportar, não esconder |
 | Diferença de domínio (pasto/Angus vs confinamento/Nelore) questionada pela banca | Alta | Médio | Declarar como limitação no painel, no relatório e no post |
 | Código gerado por IA com erro silencioso | Média | Médio | Testes simples nos conversores de dados; revisão antes de cada commit |
+
+**Plano escolhido para o volume do CVB**
+
+Os quadros brutos ficam só na máquina local; para a nuvem vai apenas a versão reduzida.
+
+1. **Subamostrar de 30 para 5 fps** localmente: 1 a cada 6 quadros, o que leva o volume para cerca de 2,4 GB. Comportamento de gado muda devagar, e 5 fps já estava previsto no pré-processamento.
+2. **Redimensionar** os quadros para o tamanho de entrada do YOLO (lado maior de 640 px) e recomprimir em JPEG, reduzindo ainda mais o volume.
+3. **Converter as anotações** para o formato YOLO na mesma passada, já com a divisão por clipe aplicada.
+4. **Subir só o derivado** para o Drive/Kaggle, compactado num único arquivo e descompactado no disco local da sessão (mais rápido que ler do Drive arquivo por arquivo).
+5. **Depois da extração de features**, os modelos temporais treinam só sobre os `.npy` (poucos MB).
+
+**Alternativa:** se o derivado ainda pesar demais, usar um subconjunto estratificado de clipes (ex.: 250 dos 502), mantendo a proporção de comportamentos, e registrar isso como limitação.
 
 ## Questões em aberto
 
