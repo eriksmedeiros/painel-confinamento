@@ -16,6 +16,9 @@ pillow
 # === Painel (Demo) ===
 gradio
 
+# === Rastreamento de Experimentos (Treino) ===
+mlflow
+
 # === Testes & Qualidade ===
 pytest
 ruff==0.17.6

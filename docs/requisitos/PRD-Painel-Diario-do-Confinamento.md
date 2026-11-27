@@ -4,7 +4,7 @@ Nov 14, 2026 · @Erik Silva de Medeiros
 
 ## Resumo
 
-O Painel Diário do Confinamento é um protótipo acadêmico que transforma fotos de cocho e vídeos de curral em um resumo diário da alimentação do gado, com alertas. Será construído por uma pessoa em 4 semanas, com GPU gratuita, como projeto da disciplina de Deep Learning, e publicado no blog/portfólio.
+O Painel Diário do Confinamento é um protótipo acadêmico que transforma fotos de cocho e vídeos de curral em um resumo diário da alimentação do gado, com alertas. Será construído por uma pessoa em **2 semanas** (escopo enxuto, sem extras), usando **Google Colab (Google AI Pro)**, como projeto da disciplina de Deep Learning, e publicado no blog/portfólio.
 
 - **Módulo A — Cocho:** classifica a sobra de ração em 6 escores (escala SDSU) a partir de uma foto.
 - **Módulo B — Curral:** detecta e rastreia cada animal no vídeo e classifica seu comportamento ao longo do tempo.
@@ -49,34 +49,34 @@ O gestor é uma persona de referência para guiar o design; não haverá valida�
 
 ## Requisitos funcionais
 
-Tudo marcado como Obrigatório cabe nas 4 semanas; Desejável entra se a semana correspondente fechar no prazo; Opcional é trabalho futuro.
+Com o prazo reduzido para **2 semanas**, apenas os itens marcados como **Obrigatório** entram no escopo. Os itens marcados como **Cortado (trabalho futuro)** ficam explicitamente fora desta entrega.
 
 | ID | Módulo | Requisito | Prioridade |
 | --- | --- | --- | --- |
 | RF01 | A — Cocho | Classificar a foto do cocho em 6 escores SDSU (0, 0,5, 1, 2, 3, 4), com a confiança da previsão | Obrigatório |
 | RF02 | A — Cocho | Traduzir o escore em ação de ajuste da ração: reduzir, manter ou aumentar | Obrigatório |
 | RF03 | B — Curral | Detectar bovinos em cada quadro de vídeo (YOLO ajustado no CVB) | Obrigatório |
-| RF04 | B — Curral | Rastrear cada animal e manter seu ID dentro do clipe | Obrigatório |
+| RF04 | B — Curral | Rastrear cada animal e manter seu ID dentro do clipe (com fallback por quadro se atrasar) | Obrigatório |
 | RF05 | B — Curral | Classificar o comportamento de cada animal por janela de tempo com LSTM/GRU | Obrigatório |
 | RF06 | B — Curral | Variante com encoder transformer temporal, treinada sobre as mesmas features | Obrigatório |
-| RF07 | A — Cocho | Variante ViT para comparar com a CNN | Desejável |
+| RF07 | A — Cocho | Variante ViT para comparar com a CNN | Cortado (trabalho futuro) |
 | RF08 | Painel | Montar um "dia simulado" só com amostras de teste (fotos FBSI + clipes CVB) | Obrigatório |
 | RF09 | Painel | Exibir por lote: escore por trato e minutos de atividade alimentar por hora | Obrigatório |
 | RF10 | Painel | Gerar alertas por regras (ex.: sobra alta + baixa atividade alimentar) | Obrigatório |
-| RF11 | Painel | Permitir que o usuário envie uma foto de cocho e receba o escore | Desejável |
-| RF12 | Painel | Exibir um clipe com caixas, IDs e comportamento sobrepostos | Desejável |
-| RF13 | A — Cocho | Mostrar mapa de atenção (Grad-CAM) da previsão | Opcional |
-| RF14 | A — Cocho | Avaliar o modelo em 30 a 50 fotos reais coletadas em campo | Opcional |
+| RF11 | Painel | Permitir que o usuário envie uma foto de cocho e receba o escore | Cortado (trabalho futuro) |
+| RF12 | Painel | Exibir um clipe com caixas, IDs e comportamento sobrepostos | Cortado (trabalho futuro) |
+| RF13 | A — Cocho | Mostrar mapa de atenção (Grad-CAM) da previsão | Cortado (trabalho futuro) |
+| RF14 | A — Cocho | Avaliar o modelo em 30 a 50 fotos reais coletadas em campo | Cortado (trabalho futuro) |
 
 ## Requisitos não funcionais
 
 | ID | Categoria | Requisito |
 | --- | --- | --- |
-| RNF01 | Reprodutibilidade | Seeds fixas, divisão treino/validação/teste salva em arquivo, ambiente versionado (`requirements.txt`) |
+| RNF01 | Reprodutibilidade | Seeds fixas, divisão treino/validação/teste salva em arquivo, ambiente versionado (`requirements.txt`), rastreamento no MLflow (Google Drive) |
 | RNF02 | Rigor experimental | Separação por clipe (CVB) e por fazenda/dia quando o metadado existir (FBSI); conjunto de teste tocado uma única vez |
-| RNF03 | Custo computacional | Todo treino cabe em GPU gratuita (Colab/Kaggle); nenhuma rodada de treino acima de \~3 h |
+| RNF03 | Custo computacional | Todo treino roda no Google Colab (Google AI Pro: L4/A100); nenhuma rodada de treino acima de ~2 h |
 | RNF04 | Armazenamento | Features e caixas pré-extraídas em `.npy`/`.parquet`; quadros brutos do CVB (14,26 GB) processados uma vez |
-| RNF05 | Desempenho da demo | Inferência de uma foto de cocho em CPU em até \~2 s; o vídeo do painel é pré-processado |
+| RNF05 | Desempenho da demo | Painel leve em CPU (Hugging Face Spaces) consumindo resultados pré-computados do teste |
 | RNF06 | Transparência | O painel informa que o dia é simulado e que os domínios dos datasets são diferentes |
 | RNF07 | Licenças | Uso não comercial e atribuição (CVB: CC BY-NC-SA 4.0; FBSI: conferir no Mendeley); código aberto no GitHub |
 | RNF08 | Qualidade de código | Estrutura modular (`data/`, `models/`, `train/`, `app/`); código gerado por agentes de IA revisado antes do commit |
@@ -110,12 +110,12 @@ O processamento pesado (detecção, rastreamento, extração de features) roda u
 
 | Recurso | Disponível | Restrição / decisão |
 | --- | --- | --- |
-| Equipe | 1 aluno, em paralelo com trabalho e outras disciplinas | Escopo travado nos requisitos Obrigatórios |
-| Prazo | 4 semanas | Marcos semanais com critério de passagem |
-| GPU | Google Colab / Kaggle (gratuitos) | Sessões e cotas limitadas: checkpoints frequentes, features pré-extraídas |
-| Armazenamento | Google Drive pessoal | CVB processado a 5 fps; guardar só artefatos derivados |
-| Stack | Python, PyTorch, Ultralytics (YOLO + rastreador ByteTrack/BoT-SORT), timm (CNN/ViT), Gradio | Bibliotecas maduras e documentadas; nada implementado do zero sem necessidade |
-| Hospedagem | Hugging Face Spaces (CPU gratuita) | Demo só com inferência leve; vídeo pré-processado |
+| Equipe | 1 aluno, em paralelo com trabalho e outras disciplinas | Escopo travado estritamente nos requisitos Obrigatórios (extras cortados) |
+| Prazo | **2 semanas (14 dias)** | Portões curtos por bloco de dias (Dia 2, 4, 7, 10, 12 e 14) |
+| GPU | **Google Colab (Google AI Pro)** | Somente Colab (sem Kaggle); GPUs L4/A100, High-RAM, checkpoints frequentes e features pré-extraídas |
+| Armazenamento | **Google Drive (Google AI Pro)** | Espaço expandido; CVB processado a 5 fps em pacote único + MLflow *file store* em `mlflow/mlruns/` |
+| Stack | Python, PyTorch, Ultralytics (YOLO + rastreador ByteTrack/BoT-SORT), timm (CNN), MLflow, Gradio | Bibliotecas maduras e documentadas; nada implementado do zero sem necessidade |
+| Hospedagem | Hugging Face Spaces (CPU gratuita) | Demo enxuta com resultados pré-processados do teste |
 | Agentes de IA | Claude Code / assistentes de código | Usados em boilerplate, conversão de dados, scripts e painel; análise e interpretação feitas pelo aluno |
 | Versionamento | GitHub | Commits em PT-BR, README com instruções de reprodução |
 
@@ -129,25 +129,30 @@ As metas abaixo são referências, não promessas: um resultado abaixo da meta, 
 | Módulo A | MAE ordinal (erro médio em "degraus" de escore) | Menor na regressão ordinal que na classificação simples |
 | Módulo A | % de previsões que mudariam a ação de ajuste | Reportado e discutido |
 | Módulo B | mAP50 da detecção de bovinos | Reportado; base para o rastreamento |
-| Módulo B | F1-macro por comportamento (LSTM/GRU vs transformer) | Tabela comparativa com ablação de taxa de quadros e tamanho de janela |
+| Módulo B | F1-macro por comportamento (LSTM/GRU vs transformer) | Tabela comparativa a 5 fps e janela fixa (ablação extensa cortada para 2 semanas) |
 | Painel | Funcionamento ponta a ponta | Dia simulado carrega, indicadores e alertas aparecem sem erro |
 
 **Critérios de aceite (Definition of Done)**
 
 - [ ] Todos os requisitos Obrigatórios implementados
 - [ ] Resultados no conjunto de teste, com divisão salva e reprodutível
-- [ ] Tabelas comparativas CNN vs ViT e LSTM/GRU vs transformer
+- [ ] Tabelas comparativas: CNN (classificação vs. regressão ordinal) e LSTM/GRU vs. transformer temporal
 - [ ] Painel publicado no Hugging Face Spaces
 - [ ] Repositório com README de reprodução
 - [ ] Relatório e post no blog com limitações explicitadas
 
-## Cronograma e marcos
+## Cronograma e marcos (2 semanas — 14 dias)
 
-Cada fase termina num portão: só se avança quando o critério é cumprido, ou aciona-se a alternativa prevista em Riscos.
+Cada bloco termina num portão: só se avança quando o critério é cumprido, ou aciona-se imediatamente o plano de contingência.
 
-&#91;embedded content: cronograma · 5 fases e seus portões\]
-
-Datas assumindo início em 16/11/2026 e entrega em 15/12/2026; ajustar quando a data oficial da disciplina for confirmada (ver Questões em aberto).
+| Dias | Épico | Entregas-chave | Portão de passagem |
+| --- | --- | --- | --- |
+| **1–2** | E01 | Auditoria FBSI/CVB, splits 70/15/15 salvos, derivado CVB (5 fps, 640 px, YOLO) no Drive | Splits testados (vazamento zero) + derivado CVB no Drive |
+| **3–4** | E02 | Pipeline FBSI, regra escore → ação (`RF02`), CNN classificação vs. regressão ordinal no Colab | CNN validada com F1-macro, MAE ordinal e % impacto na ação no MLflow |
+| **5–7** | E03 (Pt. 1) | Fine-tuning YOLO (`mAP50`), rastreamento e extração única de features (`.npy`/`.parquet`) | Features extraídas para todos os splits *(gatilho no Dia 6: cortar tracking e usar features por quadro)* |
+| **8–10** | E03 (Pt. 2) | Treino e comparação LSTM/GRU (`RF05`) vs. Transformer temporal (`RF06`) nas mesmas features | Tabela comparativa de F1-macro na validação registrada no MLflow |
+| **11–12** | E04 + Teste | Motor de alertas (`RF10`), avaliação final única no teste (`RNF02`), painel Gradio enxuto | Resultados do teste congelados + painel rodando localmente sem erro |
+| **13–14** | E05 | Deploy no Hugging Face Spaces, `README.md` de reprodução e relatório acadêmico | Painel online + relatório e repositório entregues |
 
 ## Riscos e mitigações
 
